@@ -1,7 +1,7 @@
 <div>
   <div>
     <h1>
-      List of all bookmarks
+      <%= @current_user.first_name.capitalize %>'s bookmarks
     </h1>
   </div>
 </div>
@@ -13,24 +13,18 @@
     <h2>
       Add a new bookmark
     </h2>
-
+    
     <form action="/insert_bookmark" method="post">
       <div>
-        <label for="user_id_box">
-          User
-        </label>
-
-        <input type="text" id="user_id_box" name="query_user_id">
+        <label for="movie_id_box">Movie</label>
+        <select name="query_movie_id">
+          <% Movie.all.order(:title).each do |m| %>
+            <% if !@current_user.bookmarks.map_relation_to_array(:movie_id).include?(m.id) %>
+                <option value="<%= m.id %>"><%= m.title %></option>
+            <% end %>
+          <% end %>
+        </select>
       </div>
-
-      <div>
-        <label for="movie_id_box">
-          Movie
-        </label>
-
-        <input type="text" id="movie_id_box" name="query_movie_id">
-      </div>
-
       <button>
         Create bookmark
       </button>
@@ -66,19 +60,20 @@
         <th>
         </th>
       </tr>
-
+ 
       <% @list_of_bookmarks.each do |a_bookmark| %>
+      
       <tr>
         <td>
           <%= a_bookmark.id %>
         </td>
 
         <td>
-          <%= a_bookmark.user_id %>
+          <%= a_bookmark.user.first_name %>
         </td>
 
         <td>
-          <%= a_bookmark.movie_id %>
+          <%= a_bookmark.movie.title %>
         </td>
 
         <td>

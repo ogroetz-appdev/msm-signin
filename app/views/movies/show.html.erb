@@ -19,17 +19,22 @@
     </div>
 
     <br />
+    <% if @current_user %>
+      <% if @the_movie.bookmarks.map_relation_to_array(:user_id).include?(session.fetch(:user_id)) %>
+        <a href="/delete_bookmark/<%= @the_movie.bookmarks.where({ :user_id => session.fetch(:user_id) }).at(0).id%>">Un-bookmark</a>
 
-    <% if session.fetch(:user_id) %>
-    <div>
-      <form action="/insert_bookmark" method="post">
-        <input id="movie_id" name="query_movie_id" type="hidden" value="<%= session.fetch(:user_id) %>"/>
-        <input id="user_id" name="query_user_id" type="hidden" value="<%= @the_movie.id %>">
-        <button>Bookmark this movie!</button>
-      </form>
-    </div>
+      <% else %>
+        <div>
+          <form action="/insert_bookmark" method="post">
+            <input id="movie_id" name="query_movie_id" type="hidden" value="<%= @the_movie.id %>"/>
+            <!-- the below allows tampering from the dev tools, better to have action get this directly from session in method -->
+            <!-- <input id="user_id" name="query_user_id" type="hidden" value="<%= session.fetch(:user_id) %>"> -->
+            <button>Bookmark this movie!</button>
+          </form>
+        </div>
+      <% end %>
     <% end %>
-    
+
     <dl>
       <dt>
         Title
