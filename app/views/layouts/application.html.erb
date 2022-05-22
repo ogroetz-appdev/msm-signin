@@ -16,15 +16,23 @@
 
   <body>
     <ul>
+      <% if !session.fetch(:user_id) %>
       <li>
         <a href="/user_sign_up">Sign Up</a>
       </li>
       <li>
         <a href="/user_sign_in">Sign In</a>
       </li>
+      <% end %>
+      <% if session.fetch(:user_id) %>
+      <li>
+        <a href="/edit_user_profile">Edit User Profile</a>
+      </li>
       <li>
         <a href="/user_sign_out">Sign Out</a>
       </li>
+      <% end %>
+      <br />
       <li>
         <a href="/movies">Movies</a>
       </li>
